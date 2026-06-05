@@ -31,4 +31,7 @@ public class Usuario {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     private RoleUsuario role;
+
+    @Column(nullable = false, columnDefinition = "boolean default true")
+    private Boolean statusUsuario;
 }

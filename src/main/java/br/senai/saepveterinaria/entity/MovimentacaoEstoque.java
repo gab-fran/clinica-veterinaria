@@ -38,4 +38,7 @@ public class MovimentacaoEstoque {
 
     @Column(nullable = false)
     private LocalDate dataMovimentacao;
+
+    @Column(nullable = false, columnDefinition = "boolean default true")
+    private Boolean statusMovimentacao;
 }

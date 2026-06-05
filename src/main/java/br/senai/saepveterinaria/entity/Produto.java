@@ -55,6 +55,9 @@ public class Produto {
     @Column(length = 10)
     private UnidadeMedida unidadeMedida;
 
+    @Column(nullable = false, columnDefinition = "boolean default true")
+    private Boolean statusProduto;
+
 //    @OneToMany(mappedBy = "produto")
 //    private List<MovimentacaoEstoque> movimentacoes;
 }
