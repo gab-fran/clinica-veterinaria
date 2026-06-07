@@ -10,8 +10,7 @@ import lombok.*;
 
 import java.time.LocalDate;
 
-@Getter
-@Setter
+@Data
 @Entity
 @Table(name = "produto")
 @NoArgsConstructor
@@ -55,8 +54,9 @@ public class Produto {
     @Column(length = 10)
     private UnidadeMedida unidadeMedida;
 
+    @Builder.Default
     @Column(nullable = false, columnDefinition = "boolean default true")
-    private Boolean statusProduto;
+    private Boolean statusProduto = true;
 
 //    @OneToMany(mappedBy = "produto")
 //    private List<MovimentacaoEstoque> movimentacoes;

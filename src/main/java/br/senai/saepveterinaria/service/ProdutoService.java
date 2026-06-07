@@ -4,9 +4,11 @@ import br.senai.saepveterinaria.dto.produto.ProdutoRequestDTO;
 import br.senai.saepveterinaria.dto.produto.ProdutoResponseDTO;
 import br.senai.saepveterinaria.dto.produto.ProdutoResumoDTO;
 import br.senai.saepveterinaria.entity.Produto;
+import br.senai.saepveterinaria.exception.ResourceNotFoundException;
+import br.senai.saepveterinaria.mapper.ProdutoMapper;
 import br.senai.saepveterinaria.repository.ProdutoRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,51 +18,44 @@ import java.util.List;
 public class ProdutoService {
 
     private final ProdutoRepository produtoRepository;
+    private final ProdutoMapper produtoMapper;
 
     public List<ProdutoResumoDTO> listarTodos() {
-        return produtoRepository.findByStatusProdutoTrue().stream().map(this::converterParaResumoDTO).toList();
+        return produtoRepository.findByStatusProdutoTrue()
+                .stream()
+                .map(produtoMapper::toResumo)
+                .toList();
     }
 
     public ProdutoResponseDTO listarPorId(Integer id) {
-        return null;
+        return produtoMapper.toResponse(buscarProdutoAtivo(id));
+    }
+    
+    @Transactional
+    public ProdutoResponseDTO cadastrar(ProdutoRequestDTO dto) {
+        Produto produto = produtoMapper.toEntity(dto);
+        return produtoMapper.toResponse(produtoRepository.save(produto));
     }
 
+    @Transactional
+    public ProdutoResponseDTO atualizar(Integer id, ProdutoRequestDTO dto) {
+        Produto produto = buscarProdutoAtivo(id);
 
-    private Produto converterParaEntidade(ProdutoRequestDTO dto) {
-        return Produto.builder()
-                .nome(dto.getNome())
-                .marca(dto.getMarca())
-                .tipo(dto.getTipo())
-                .quantidadeEstoque(dto.getQuantidadeEstoque())
-                .estoqueMinimo(dto.getEstoqueMinimo())
-                .validade(dto.getValidade())
-                .pesoKg(dto.getPesoKg())
-                .dosagem(dto.getDosagem())
-                .unidadeMedida(dto.getUnidadeMedida())
-                .build();
+        produtoMapper.updateEntity(dto, produto);
+
+        return produtoMapper.toResponse(produtoRepository.save(produto));
     }
 
-    private ProdutoResponseDTO converterParaDTO(Produto produto) {
-        return ProdutoResponseDTO.builder()
-                .idProduto(produto.getIdProduto())
-                .nome(produto.getNome())
-                .marca(produto.getMarca())
-                .tipo(produto.getTipo())
-                .quantidadeEstoque(produto.getQuantidadeEstoque())
-                .estoqueMinimo(produto.getEstoqueMinimo())
-                .validade(produto.getValidade())
-                .pesoKg(produto.getPesoKg())
-                .dosagem(produto.getDosagem())
-                .unidadeMedida(produto.getUnidadeMedida())
-                .build();
+    @Transactional
+    public void remover(Integer id) {
+        Produto produto = buscarProdutoAtivo(id);
+        produto.setStatusProduto(false);
     }
 
-    private ProdutoResumoDTO converterParaResumoDTO(Produto produto) {
-        return ProdutoResumoDTO.builder()
-                .idProduto(produto.getIdProduto())
-                .nome(produto.getNome())
-                .marca(produto.getMarca())
-                .quantidadeEstoque(produto.getQuantidadeEstoque())
-                .build();
+    private Produto buscarProdutoAtivo(Integer id) {
+        return produtoRepository.findByIdProdutoAndStatusProdutoTrue(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Produto não encontrado com ID: " + id));
     }
 }
