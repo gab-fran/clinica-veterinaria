@@ -9,31 +9,32 @@ import lombok.Data;
 
 import java.time.LocalDate;
 
-@Data
-public class ProdutoRequestDTO {
+public record ProdutoRequestDTO(
 
-    @NotBlank(message = "O nome é obrigatório")
-    private String nome;
+        @NotBlank(message = "O nome é obrigatório")
+        String nome,
 
-    @NotBlank(message = "A marca é obrigatória")
-    private String marca;
+        @NotBlank(message = "A marca é obrigatória")
+        String marca,
 
-    @NotNull(message = "O tipo é obrigatório")
-    private TipoProduto tipo;
+        @NotNull(message = "O tipo é obrigatório")
+        TipoProduto tipo,
 
-    @NotNull(message = "A quantidade em estoque é obrigatória")
-    @Min(value = 0, message = "A quantidade não pode ser negativa")
-    private Integer quantidadeEstoque;
+        @NotNull(message = "A quantidade em estoque é obrigatória")
+        @Min(value = 0, message = "A quantidade não pode ser negativa")
+        Integer quantidadeEstoque,
 
-    @NotNull(message = "O estoque mínimo é obrigatório")
-    @Min(value = 0, message = "O estoque mínimo não pode ser negativo")
-    private Integer estoqueMinimo;
+        @NotNull(message = "O estoque mínimo é obrigatório")
+        @Min(value = 0, message = "O estoque mínimo não pode ser negativo")
+        Integer estoqueMinimo,
 
-    private LocalDate validade;
+        LocalDate validade,
 
-    private Double pesoKg;
+        Double pesoKg,
 
-    private Double dosagem;
+        Double dosagem,
 
-    private UnidadeMedida unidadeMedida;
+        UnidadeMedida unidadeMedida
+) {
+
 }
