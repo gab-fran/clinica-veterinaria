@@ -3,6 +3,7 @@ package br.senai.saepveterinaria.entity;
 import br.senai.saepveterinaria.enums.RoleUsuario;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 @Entity
@@ -18,20 +19,24 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idUsuario;
 
+    @NotBlank(message = "O nome é obrigatório")
     @Column(nullable = false)
     private String nome;
 
-    @Column(length = 100)
+    @NotBlank(message = "O email é obrigatório")
+    @Column(nullable = false, unique = true, length = 100)
     @Email
     private String email;
 
-    @Column(nullable = false, length = 20)
+    @NotBlank(message = "A senha é obrigatório")
+    @Column(nullable = false, length = 100)
     private String senha;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     private RoleUsuario role;
 
+    @Builder.Default
     @Column(nullable = false, columnDefinition = "boolean default true")
-    private Boolean statusUsuario;
+    private Boolean statusUsuario = true;
 }
