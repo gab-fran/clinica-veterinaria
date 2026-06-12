@@ -1,8 +1,7 @@
 package br.senai.saepveterinaria.dto.movimentacao;
 
 import br.senai.saepveterinaria.enums.TipoMovimentacao;
-
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public record MovimentacaoResponseDTO(
 
@@ -13,7 +12,8 @@ public record MovimentacaoResponseDTO(
         String nomeUsuario,
         TipoMovimentacao tipoMovimentacao,
         Integer quantidade,
-        LocalDate dataMovimentacao,
+        LocalDateTime dataCriacaoMovimentacao,
+        LocalDateTime dataAtualizacaoMovimentacao,
         Boolean statusMovimentacao
 
 ) {

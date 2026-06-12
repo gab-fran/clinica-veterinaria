@@ -4,8 +4,11 @@ import br.senai.saepveterinaria.enums.TipoMovimentacao;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "movimentacaoEstoque")
@@ -36,9 +39,14 @@ public class MovimentacaoEstoque {
     @Column(nullable = false)
     private Integer quantidade;
 
-    @Column(nullable = false)
-    private LocalDate dataMovimentacao;
+    @CreationTimestamp
+    @Column(updatable = false)
+    private LocalDateTime dataCriacaoMovimentacao;
 
+    @UpdateTimestamp
+    private LocalDateTime dataAtualizacaoMovimentacao;
+
+    @Builder.Default
     @Column(nullable = false, columnDefinition = "boolean default true")
-    private Boolean statusMovimentacao;
+    private Boolean statusMovimentacao = true;
 }
