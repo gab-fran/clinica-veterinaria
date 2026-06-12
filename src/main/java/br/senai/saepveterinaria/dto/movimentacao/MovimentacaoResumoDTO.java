@@ -4,17 +4,11 @@ import br.senai.saepveterinaria.enums.TipoMovimentacao;
 
 import java.time.LocalDate;
 
-public record MovimentacaoResponseDTO(
-
+public record MovimentacaoResumoDTO(
         Integer idMovimentacaoEstoque,
-        Integer idProduto,
         String nomeProduto,
-        Integer idUsuario,
-        String nomeUsuario,
         TipoMovimentacao tipoMovimentacao,
         Integer quantidade,
-        LocalDate dataMovimentacao,
-        Boolean statusMovimentacao
-
+        LocalDate dataMovimentacao
 ) {
 }
