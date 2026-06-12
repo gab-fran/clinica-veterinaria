@@ -29,7 +29,7 @@ public class Usuario {
     private String email;
 
     @NotBlank(message = "A senha é obrigatório")
-    @Column(nullable = false, length = 100)
+    @Column(nullable = false, length = 255)
     private String senha;
 
     @Enumerated(EnumType.STRING)

@@ -3,11 +3,14 @@ package br.senai.saepveterinaria.service;
 import br.senai.saepveterinaria.dto.usuario.UsuarioRequestDTO;
 import br.senai.saepveterinaria.dto.usuario.UsuarioResponseDTO;
 import br.senai.saepveterinaria.entity.Usuario;
+import br.senai.saepveterinaria.enums.RoleUsuario;
+import br.senai.saepveterinaria.exception.BusinessException;
 import br.senai.saepveterinaria.exception.ResourceNotFoundException;
 import br.senai.saepveterinaria.mapper.UsuarioMapper;
 import br.senai.saepveterinaria.repository.UsuarioRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,6 +21,7 @@ public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
     private final UsuarioMapper usuarioMapper;
+    private final PasswordEncoder passwordEncoder;
 
     public List<UsuarioResponseDTO> listarTodos() {
         return usuarioRepository.findByStatusUsuarioTrue()
@@ -35,9 +39,22 @@ public class UsuarioService {
     }
 
     @Transactional
-    public UsuarioResponseDTO cadastrar(UsuarioRequestDTO dto) {
+    public UsuarioResponseDTO cadastrarAdmin(
+            UsuarioRequestDTO dto) {
+
+        if (usuarioRepository.existsByEmail(dto.email())) {
+            throw new BusinessException("Já existe um usuário com este email");
+        }
+
         Usuario usuario = usuarioMapper.toEntity(dto);
-        return usuarioMapper.toResponse(usuarioRepository.save(usuario));
+
+        usuario.setSenha(passwordEncoder.encode(dto.senha()));
+
+        usuario.setRole(RoleUsuario.ADMINISTRADOR);
+
+        return usuarioMapper.toResponse(
+                usuarioRepository.save(usuario)
+        );
     }
 
     @Transactional

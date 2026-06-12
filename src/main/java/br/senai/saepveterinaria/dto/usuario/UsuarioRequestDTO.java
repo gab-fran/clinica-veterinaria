@@ -15,10 +15,6 @@ public record UsuarioRequestDTO(
         String email,
 
         @NotBlank(message = "A senha é obrigatória")
-        String senha,
-
-        @NotNull(message = "A role é obrigatória")
-        RoleUsuario role
-
+        String senha
 ) {
 }

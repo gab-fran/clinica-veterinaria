@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,10 +37,10 @@ public class UsuarioController {
         return ResponseEntity.ok(usuarioService.listarPorEmail(email));
     }
 
-
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
     @PostMapping("/cadastrar")
     public ResponseEntity<UsuarioResponseDTO> cadastrar(@RequestBody @Valid UsuarioRequestDTO dto) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(usuarioService.cadastrar(dto));
+        return ResponseEntity.status(HttpStatus.CREATED).body(usuarioService.cadastrarAdmin(dto));
     }
 
     @PutMapping("/atualizar/{id}")
