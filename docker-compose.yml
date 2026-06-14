@@ -1,0 +1,28 @@
+services:
+  app:
+    build: .
+    container_name: saep-app
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env.docker
+    depends_on:
+      - postgres
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:18
+    container_name: saep-postgres
+    environment:
+      POSTGRES_DB: saep_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
