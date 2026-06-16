@@ -1,5 +1,6 @@
 package br.senai.saepveterinaria.security;
 
+import br.senai.saepveterinaria.exception.InvalidTokenException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -28,8 +29,21 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         String header = request.getHeader("Authorization");
 
-        if (header == null || !header.startsWith("Bearer ")) {
+        if (header == null) {
             filterChain.doFilter(request, response);
+            return;
+        }
+
+        if (!header.startsWith("Bearer ")) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setContentType("application/json");
+
+            response.getWriter().write("""
+        {
+          "message": "O cabeçalho Authorization deve seguir o padrão 'Bearer <token>'"
+        }
+        """);
+
             return;
         }
 
