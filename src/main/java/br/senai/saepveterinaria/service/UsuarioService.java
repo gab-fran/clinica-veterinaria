@@ -1,7 +1,9 @@
 package br.senai.saepveterinaria.service;
 
-import br.senai.saepveterinaria.dto.usuario.UsuarioRequestDTO;
+import br.senai.saepveterinaria.dto.usuario.AlterarSenhaDTO;
+import br.senai.saepveterinaria.dto.usuario.UsuarioCreateDTO;
 import br.senai.saepveterinaria.dto.usuario.UsuarioResponseDTO;
+import br.senai.saepveterinaria.dto.usuario.UsuarioUpdateDTO;
 import br.senai.saepveterinaria.entity.Usuario;
 import br.senai.saepveterinaria.enums.RoleUsuario;
 import br.senai.saepveterinaria.exception.BusinessException;
@@ -10,10 +12,11 @@ import br.senai.saepveterinaria.mapper.UsuarioMapper;
 import br.senai.saepveterinaria.repository.UsuarioRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -23,11 +26,9 @@ public class UsuarioService {
     private final UsuarioMapper usuarioMapper;
     private final PasswordEncoder passwordEncoder;
 
-    public List<UsuarioResponseDTO> listarTodos() {
-        return usuarioRepository.findByStatusUsuarioTrue()
-                .stream()
-                .map(usuarioMapper::toResponse)
-                .toList();
+    public Page<UsuarioResponseDTO> listarTodos(Pageable pageable) {
+        return usuarioRepository.findByStatusUsuarioTrue(pageable)
+                .map(usuarioMapper::toResponse);
     }
 
     public UsuarioResponseDTO listarPorEmail(String email) {
@@ -40,7 +41,7 @@ public class UsuarioService {
 
     @Transactional
     public UsuarioResponseDTO cadastrarAdmin(
-            UsuarioRequestDTO dto) {
+            UsuarioCreateDTO dto) {
 
         if (usuarioRepository.existsByEmail(dto.email())) {
             throw new BusinessException("Já existe um usuário com este email");
@@ -58,12 +59,23 @@ public class UsuarioService {
     }
 
     @Transactional
-    public UsuarioResponseDTO atualizar(Integer id, UsuarioRequestDTO dto) {
+    public UsuarioResponseDTO atualizar(Integer id, UsuarioUpdateDTO dto) {
         Usuario usuario = buscarUsuarioAtivo(id);
 
         usuarioMapper.updateEntity(dto, usuario);
 
         return usuarioMapper.toResponse(usuarioRepository.save(usuario));
+    }
+
+    @Transactional
+    public void alterarSenha(Integer id, AlterarSenhaDTO dto) {
+        Usuario usuario = buscarUsuarioAtivo(id);
+
+        if (!passwordEncoder.matches(dto.senhaAtual(), usuario.getSenha())) {
+            throw new BadCredentialsException("Credenciais inválidas");
+        }
+
+        usuario.setSenha(passwordEncoder.encode(dto.novaSenha()));
     }
 
     @Transactional

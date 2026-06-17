@@ -3,6 +3,7 @@ package br.senai.saepveterinaria.dto.produto;
 import br.senai.saepveterinaria.enums.TipoProduto;
 import br.senai.saepveterinaria.enums.UnidadeMedida;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public record ProdutoResponseDTO(
@@ -14,8 +15,8 @@ public record ProdutoResponseDTO(
         Integer quantidadeEstoque,
         Integer estoqueMinimo,
         LocalDate validade,
-        Double pesoKg,
-        Double dosagem,
+        BigDecimal pesoKg,
+        BigDecimal dosagem,
         UnidadeMedida unidadeMedida
 
 ) {

@@ -1,8 +1,9 @@
 package br.senai.saepveterinaria.mapper;
 
-import br.senai.saepveterinaria.dto.movimentacao.MovimentacaoRequestDTO;
+import br.senai.saepveterinaria.dto.movimentacao.MovimentacaoCreateDTO;
 import br.senai.saepveterinaria.dto.movimentacao.MovimentacaoResponseDTO;
 import br.senai.saepveterinaria.dto.movimentacao.MovimentacaoResumoDTO;
+import br.senai.saepveterinaria.dto.movimentacao.MovimentacaoUpdateDTO;
 import br.senai.saepveterinaria.entity.MovimentacaoEstoque;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -15,28 +16,28 @@ public interface MovimentacaoMapper {
     @Mapping(target = "dataCriacaoMovimentacao", ignore = true)
     @Mapping(target = "dataAtualizacaoMovimentacao", ignore = true)
     @Mapping(target = "statusMovimentacao", ignore = true)
-    @Mapping(target = "idProduto", ignore = true)
-    @Mapping(target = "idUsuario", ignore = true)
-    MovimentacaoEstoque toEntity(MovimentacaoRequestDTO dto);
+    @Mapping(target = "produto", ignore = true)
+    @Mapping(target = "usuario", ignore = true)
+    MovimentacaoEstoque toEntity(MovimentacaoCreateDTO dto);
 
-    @Mapping(source = "idProduto.idProduto", target = "idProduto")
-    @Mapping(source = "idProduto.nome", target = "nomeProduto")
-    @Mapping(source = "idUsuario.idUsuario", target = "idUsuario")
-    @Mapping(source = "idUsuario.nome", target = "nomeUsuario")
+    @Mapping(source = "produto.idProduto", target = "idProduto")
+    @Mapping(source = "produto.nome", target = "nomeProduto")
+    @Mapping(source = "usuario.idUsuario", target = "idUsuario")
+    @Mapping(source = "usuario.nome", target = "nomeUsuario")
     MovimentacaoResponseDTO toResponse(MovimentacaoEstoque movimentacaoEstoque);
 
-    @Mapping(source = "idProduto.nome", target = "nomeProduto")
+    @Mapping(source = "produto.nome", target = "nomeProduto")
+    @Mapping(source = "dataCriacaoMovimentacao", target = "dataMovimentacao")
     MovimentacaoResumoDTO toResumo(MovimentacaoEstoque movimentacaoEstoque);
 
     @Mapping(target = "idMovimentacaoEstoque", ignore = true)
     @Mapping(target = "dataCriacaoMovimentacao", ignore = true)
     @Mapping(target = "dataAtualizacaoMovimentacao", ignore = true)
     @Mapping(target = "statusMovimentacao", ignore = true)
-    @Mapping(target = "idProduto", ignore = true)
-    @Mapping(target = "idUsuario", ignore = true)
+    @Mapping(target = "produto", ignore = true)
+    @Mapping(target = "usuario", ignore = true)
     void updateEntity(
-            MovimentacaoRequestDTO dto,
+            MovimentacaoUpdateDTO dto,
             @MappingTarget MovimentacaoEstoque movimentacaoEstoque
     );
-
 }

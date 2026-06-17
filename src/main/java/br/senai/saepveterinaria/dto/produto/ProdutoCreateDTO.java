@@ -2,15 +2,16 @@ package br.senai.saepveterinaria.dto.produto;
 
 import br.senai.saepveterinaria.enums.TipoProduto;
 import br.senai.saepveterinaria.enums.UnidadeMedida;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
-public record ProdutoRequestDTO(
-
+public record ProdutoCreateDTO(
         @NotBlank(message = "O nome é obrigatório")
         String nome,
 
@@ -28,13 +29,15 @@ public record ProdutoRequestDTO(
         @Min(value = 0, message = "O estoque mínimo não pode ser negativo")
         Integer estoqueMinimo,
 
+        @FutureOrPresent(message = "A validade não pode estar no passado")
         LocalDate validade,
 
-        Double pesoKg,
+        @DecimalMin(value = "0.0", inclusive = false, message = "O peso deve ser maior que zero")
+        BigDecimal pesoKg,
 
-        Double dosagem,
+        @DecimalMin(value = "0.0", inclusive = false, message = "A dosagem deve ser maior que zero")
+        BigDecimal dosagem,
 
         UnidadeMedida unidadeMedida
 ) {
-
 }

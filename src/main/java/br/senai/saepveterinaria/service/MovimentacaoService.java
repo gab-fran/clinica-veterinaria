@@ -1,8 +1,9 @@
 package br.senai.saepveterinaria.service;
 
-import br.senai.saepveterinaria.dto.movimentacao.MovimentacaoRequestDTO;
+import br.senai.saepveterinaria.dto.movimentacao.MovimentacaoCreateDTO;
 import br.senai.saepveterinaria.dto.movimentacao.MovimentacaoResponseDTO;
 import br.senai.saepveterinaria.dto.movimentacao.MovimentacaoResumoDTO;
+import br.senai.saepveterinaria.dto.movimentacao.MovimentacaoUpdateDTO;
 import br.senai.saepveterinaria.entity.MovimentacaoEstoque;
 import br.senai.saepveterinaria.entity.Produto;
 import br.senai.saepveterinaria.entity.Usuario;
@@ -15,9 +16,9 @@ import br.senai.saepveterinaria.repository.ProdutoRepository;
 import br.senai.saepveterinaria.repository.UsuarioRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -28,11 +29,9 @@ public class MovimentacaoService {
     private final ProdutoRepository produtoRepository;
     private final UsuarioRepository usuarioRepository;
 
-    public List<MovimentacaoResumoDTO> listarTodos() {
-        return movimentacaoRepository.findByStatusMovimentacaoTrue()
-                .stream()
-                .map(movimentacaoMapper::toResumo)
-                .toList();
+    public Page<MovimentacaoResumoDTO> listarTodos(Pageable pageable) {
+        return movimentacaoRepository.findByStatusMovimentacaoTrue(pageable)
+                .map(movimentacaoMapper::toResumo);
     }
 
     public MovimentacaoResponseDTO listarPorId(Integer id) {
@@ -40,11 +39,11 @@ public class MovimentacaoService {
     }
 
     @Transactional
-    public MovimentacaoResponseDTO cadastrar(MovimentacaoRequestDTO dto) {
+    public MovimentacaoResponseDTO cadastrar(MovimentacaoCreateDTO dto) {
 
         MovimentacaoEstoque movimentacao = movimentacaoMapper.toEntity(dto);
 
-        Produto produto = produtoRepository.findByIdProdutoAndStatusProdutoTrue(dto.idProduto())
+        Produto produto = produtoRepository.findAtivoForUpdate(dto.idProduto())
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Produto não encontrado com o id: " + dto.idProduto()));
 
@@ -54,8 +53,8 @@ public class MovimentacaoService {
 
         atualizarEstoque(produto, dto.tipoMovimentacao(), dto.quantidade());
 
-        movimentacao.setIdProduto(produto);
-        movimentacao.setIdUsuario(usuario);
+        movimentacao.setProduto(produto);
+        movimentacao.setUsuario(usuario);
 
         movimentacao = movimentacaoRepository.save(movimentacao);
 
@@ -63,11 +62,15 @@ public class MovimentacaoService {
     }
 
     @Transactional
-    public MovimentacaoResponseDTO atualizar(Integer id, MovimentacaoRequestDTO dto) {
+    public MovimentacaoResponseDTO atualizar(Integer id, MovimentacaoUpdateDTO dto) {
 
         MovimentacaoEstoque movimentacao = buscarMovimentacaoAtiva(id);
 
-        Produto produtoAntigo = movimentacao.getIdProduto();
+        Produto produtoAntigo = produtoRepository.findAtivoForUpdate(
+                        movimentacao.getProduto().getIdProduto())
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Produto não encontrado com o id: "
+                                + movimentacao.getProduto().getIdProduto()));
 
         // Desfaz a movimentação antiga
         reverterMovimentacao(
@@ -76,7 +79,7 @@ public class MovimentacaoService {
                 movimentacao.getQuantidade()
         );
 
-        Produto produtoNovo = produtoRepository.findByIdProdutoAndStatusProdutoTrue(dto.idProduto())
+        Produto produtoNovo = produtoRepository.findAtivoForUpdate(dto.idProduto())
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Produto não encontrado com o id: " + dto.idProduto()));
 
@@ -93,8 +96,8 @@ public class MovimentacaoService {
 
         movimentacaoMapper.updateEntity(dto, movimentacao);
 
-        movimentacao.setIdProduto(produtoNovo);
-        movimentacao.setIdUsuario(usuario);
+        movimentacao.setProduto(produtoNovo);
+        movimentacao.setUsuario(usuario);
 
         movimentacao = movimentacaoRepository.save(movimentacao);
 
@@ -104,6 +107,18 @@ public class MovimentacaoService {
     @Transactional
     public void remover(Integer id) {
         MovimentacaoEstoque movimentacaoEstoque = buscarMovimentacaoAtiva(id);
+        Produto produto = produtoRepository.findAtivoForUpdate(
+                        movimentacaoEstoque.getProduto().getIdProduto())
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Produto não encontrado com o id: "
+                                + movimentacaoEstoque.getProduto().getIdProduto()));
+
+        reverterMovimentacao(
+                produto,
+                movimentacaoEstoque.getTipoMovimentacao(),
+                movimentacaoEstoque.getQuantidade()
+        );
+
         movimentacaoEstoque.setStatusMovimentacao(false);
     }
 
@@ -142,6 +157,11 @@ public class MovimentacaoService {
                                       Integer quantidade) {
 
         if (tipo == TipoMovimentacao.ENTRADA) {
+            if (produto.getQuantidadeEstoque() < quantidade) {
+                throw new BusinessException(
+                        "Não é possível estornar a entrada: estoque atual insuficiente.");
+            }
+
             produto.setQuantidadeEstoque(
                     produto.getQuantidadeEstoque() - quantidade);
         }

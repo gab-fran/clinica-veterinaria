@@ -39,7 +39,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         // Libera apenas as rotas de login/cadastro (ajuste o caminho de acordo com o seu Controller)
-                        .requestMatchers(HttpMethod.POST, "/auth/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .requestMatchers("/", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
 
                         // Todas as outras rotas exigem que o usuário esteja autenticado com um token válido

@@ -1,14 +1,14 @@
-package br.senai.saepveterinaria.dto.auth;
+package br.senai.saepveterinaria.dto.usuario;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
-public record LoginRequestDTO(
+public record UsuarioUpdateDTO(
+        @NotBlank(message = "O nome é obrigatório")
+        String nome,
+
         @NotBlank(message = "O email é obrigatório")
         @Email(message = "Email inválido")
-        String email,
-
-        @NotBlank(message = "A senha é obrigatória")
-        String senha
+        String email
 ) {
 }

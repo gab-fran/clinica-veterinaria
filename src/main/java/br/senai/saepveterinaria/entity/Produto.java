@@ -1,13 +1,24 @@
 package br.senai.saepveterinaria.entity;
 
-
 import br.senai.saepveterinaria.enums.TipoProduto;
 import br.senai.saepveterinaria.enums.UnidadeMedida;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.Version;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Data
@@ -21,6 +32,9 @@ public class Produto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idProduto;
+
+    @Version
+    private Long version;
 
     @NotBlank(message = "O nome é obrigatório")
     @Column(nullable = false)
@@ -44,11 +58,11 @@ public class Produto {
 
     private LocalDate validade;
 
-    @Column(columnDefinition = "decimal(10, 2)")
-    private Double pesoKg;
+    @Column(precision = 10, scale = 2)
+    private BigDecimal pesoKg;
 
-    @Column(columnDefinition = "decimal(10, 2)")
-    private Double dosagem;
+    @Column(precision = 10, scale = 2)
+    private BigDecimal dosagem;
 
     @Enumerated(EnumType.STRING)
     @Column(length = 10)
@@ -57,7 +71,4 @@ public class Produto {
     @Builder.Default
     @Column(nullable = false, columnDefinition = "boolean default true")
     private Boolean statusProduto = true;
-
-//    @OneToMany(mappedBy = "produto")
-//    private List<MovimentacaoEstoque> movimentacoes;
 }

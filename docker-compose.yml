@@ -13,10 +13,9 @@ services:
   postgres:
     image: postgres:18
     container_name: saep-postgres
+    env_file:
+      - .env.docker
     environment:
-      POSTGRES_DB: saep_db
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: admin
       PGDATA: /var/lib/postgresql/data/pgdata
     ports:
       - "5433:5432"
