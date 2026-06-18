@@ -1,14 +1,7 @@
 package br.senai.saepveterinaria.entity;
 
 import br.senai.saepveterinaria.enums.RoleUsuario;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -18,7 +11,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "usuario")
+@Table(
+        name = "usuario",
+        indexes = {
+                @Index(name = "idx_usuario_status", columnList = "status_usuario")
+        }
+)
 @Getter
 @Setter
 @AllArgsConstructor
@@ -29,6 +27,9 @@ public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idUsuario;
+
+    @Version
+    private Long version;
 
     @NotBlank(message = "O nome é obrigatório")
     @Column(nullable = false)

@@ -66,11 +66,13 @@ public class MovimentacaoService {
 
         MovimentacaoEstoque movimentacao = buscarMovimentacaoAtiva(id);
 
+        Integer idProduto = movimentacao.getProduto().getIdProduto();
+
         Produto produtoAntigo = produtoRepository.findAtivoForUpdate(
                         movimentacao.getProduto().getIdProduto())
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Produto não encontrado com o id: "
-                                + movimentacao.getProduto().getIdProduto()));
+                                + idProduto));
 
         // Desfaz a movimentação antiga
         reverterMovimentacao(

@@ -15,5 +15,11 @@ public class StartupMessage implements CommandLineRunner {
     @Override
     public void run(String... args) {
         log.info("event=application_started app=saep-veterinaria url=http://localhost:{}", port);
+
+        System.out.println();
+        System.out.println("🚀 API SAEP Veterinária iniciada com sucesso!");
+        System.out.println("🔗 http://localhost:" + port);
+        System.out.println();
+
     }
 }

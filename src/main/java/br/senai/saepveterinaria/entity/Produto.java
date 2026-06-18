@@ -2,15 +2,7 @@ package br.senai.saepveterinaria.entity;
 
 import br.senai.saepveterinaria.enums.TipoProduto;
 import br.senai.saepveterinaria.enums.UnidadeMedida;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.persistence.Version;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -23,7 +15,12 @@ import java.time.LocalDate;
 
 @Data
 @Entity
-@Table(name = "produto")
+@Table(
+        name = "produto",
+        indexes = {
+                @Index(name = "idx_produto_status", columnList = "status_produto")
+        }
+)
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

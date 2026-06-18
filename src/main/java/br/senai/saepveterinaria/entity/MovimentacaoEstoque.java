@@ -1,17 +1,7 @@
 package br.senai.saepveterinaria.entity;
 
 import br.senai.saepveterinaria.enums.TipoMovimentacao;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,7 +14,14 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "movimentacao_estoque")
+@Table(
+        name = "movimentacao_estoque",
+        indexes = {
+                @Index(name = "idx_movimentacao_produto", columnList = "id_produto"),
+                @Index(name = "idx_movimentacao_usuario", columnList = "id_usuario"),
+                @Index(name = "idx_movimentacao_status", columnList = "status_movimentacao")
+        }
+)
 @Getter
 @Setter
 @AllArgsConstructor
@@ -35,6 +32,9 @@ public class MovimentacaoEstoque {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idMovimentacaoEstoque;
+
+    @Version
+    private Long version;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_produto", nullable = false)
