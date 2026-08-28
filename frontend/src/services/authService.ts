@@ -19,4 +19,21 @@ export const authService = {
     }),
 
   logout: clearAccessToken,
+
+  checkTokenExpiry() {
+    const token = localStorage.getItem('token');
+    
+    if (token) {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      const expiry = payload.exp;
+      const now = Math.floor(Date.now() / 1000);
+
+      if (expiry < now) {
+        this.logout();
+        return false;
+      }
+      return true;
+    }
+    return false;
+  }
 };
