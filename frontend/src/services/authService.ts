@@ -2,7 +2,7 @@ import type { LoginRequest, LoginResponse } from '../types/auth';
 import type { UsuarioCreateDTO, UsuarioResponseDTO } from '../types/usuario';
 import { endpoints } from '../utils/endpoints';
 import { apiRequest } from './apiClient';
-import { clearAccessToken, setAccessToken } from './apiConfig';
+import { clearAccessToken, getAccessToken, setAccessToken, setUserData } from './apiConfig';
 
 export const authService = {
   async login(dados: LoginRequest): Promise<LoginResponse> {
@@ -10,6 +10,15 @@ export const authService = {
       method: 'POST', body: dados, authenticated: false,
     });
     setAccessToken(resposta.token);
+
+    if (resposta != null) {
+      const usuario = await apiRequest<UsuarioResponseDTO>(endpoints.usuarios.byEmail(dados.email), {
+        method: 'GET',
+        authenticated: true,
+      });
+      setUserData(usuario);
+    }
+
     return resposta;
   },
 
@@ -21,8 +30,8 @@ export const authService = {
   logout: clearAccessToken,
 
   checkTokenExpiry() {
-    const token = localStorage.getItem('token');
-    
+    const token = getAccessToken();
+
     if (token) {
       const payload = JSON.parse(atob(token.split('.')[1]));
       const expiry = payload.exp;

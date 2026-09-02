@@ -3,15 +3,15 @@ import { Menubar } from 'primereact/menubar';
 import type { MenuItem } from 'primereact/menuitem';
 import logoImg from "../../assets/logo.svg";
 import { authService } from "../../services/authService";
+import { getAccessToken, getUserData } from "../../services/apiConfig";
 
 function NavBar(): JSX.Element {
     const [isAuthenticated, setIsAuthenticated] = useState(() => {
-        const isAuth = localStorage.getItem('isAuth');
-        const token = localStorage.getItem('token');
-        return !!(isAuth && token && authService.checkTokenExpiry());
+        const token = getAccessToken();
+        return !!(token && authService.checkTokenExpiry());
     });
 
-    const [email] = useState(() => localStorage.getItem('email') ?? '');
+    const [user] = useState(() => getUserData() ?? '');
 
     const logout = () => {
         authService.logout();
@@ -28,7 +28,7 @@ function NavBar(): JSX.Element {
     // Logo encapsulada para o lado esquerdo
     const startSection = (
         <div>
-            <img alt="MedFlow Logo" src={logoImg} />
+            <img alt="Clinica veterinaria logo" src={logoImg} />
         </div>
     );
 
@@ -39,10 +39,10 @@ function NavBar(): JSX.Element {
                 <>
                     <div>
                         <span>Olá,</span>
-                        <span>{email}</span>
+                        <span>{user.nome}</span>
                     </div>
                     <button onClick={logout}>
-                        <i>Sair</i> 
+                        <i>Sair</i>
                     </button>
                 </>
             ) : (

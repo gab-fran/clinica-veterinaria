@@ -4,11 +4,11 @@ function Footer(): JSX.Element {
     return (
         <footer>
             <div>
-                <h2>MedFlow</h2>
+                <h2>Clinica veterinaria</h2>
                 <p>Sistema de gestão para clínicas veterinárias.</p>
             </div>
 
-            <p>&copy; {new Date().getFullYear()} MedFlow. Todos os direitos reservados.</p>
+            <p>&copy; {new Date().getFullYear()} Clinica. Todos os direitos reservados.</p>
         </footer>
     );
 }
