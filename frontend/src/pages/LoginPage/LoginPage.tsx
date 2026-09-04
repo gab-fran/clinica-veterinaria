@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // 1. Importe o hook de navegação
-import { DynamicForm } from '../../components/Forms/DynamicForm';
+import { DynamicForm } from '../../components/DynamicForm/DynamicForm';
 import { loginSchema, loginFields, type LoginFormData } from '../../schemas/authSchema';
 import { authService } from '../../services/authService';
 import { ApiError } from '../../services/apiClient';
@@ -34,25 +34,25 @@ export function LoginPage() {
 
     return (
         <>
-        <NavBar />
-        <div className="login-wrapper">
-            <h2>Acessar Conta</h2>
-            {loginError && <p className="error-message" role="alert">{loginError}</p>}
-            <DynamicForm
-                schema={loginSchema}
-                fields={loginFields}
-                onSubmit={handleLogin}
-                submitText="Entrar"
-                className="login-form-custom"
-                fieldClassName="input-wrapper"
-                submitButtonClassName="btn-login"
-            >
-                <div className="login-options">
-                    <a href="/recuperar-senha">Esqueceu a senha?</a>
-                </div>
-            </DynamicForm>
-        </div>
-        <Footer />
+            <NavBar />
+            <div className="login-wrapper">
+                <h2>Acessar Conta</h2>
+                {loginError && <p className="error-message" role="alert">{loginError}</p>}
+                <DynamicForm
+                    schema={loginSchema}
+                    fields={loginFields}
+                    onSubmit={handleLogin}
+                    submitText="Entrar"
+                    className="login-form-custom"
+                    fieldClassName="input-wrapper"
+                    submitButtonClassName="btn-login"
+                >
+                    <div className="login-options">
+                        <a href="/recuperar-senha">Esqueceu a senha?</a>
+                    </div>
+                </DynamicForm>
+            </div>
+            <Footer />
         </>
     );
 }

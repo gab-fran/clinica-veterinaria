@@ -20,9 +20,11 @@ function NavBar(): JSX.Element {
 
     const items: MenuItem[] = [
         { label: 'Home', icon: 'pi pi-home', url: "/" },
-        { label: 'Paciente', icon: 'pi pi-users', url: "/" },
-        { label: 'Médico', icon: 'pi pi-user-plus', url: "/" },
-        { label: 'Consulta', icon: 'pi pi-calendar', url: "/" }
+        { label: 'Produtos', icon: 'pi pi-box', url: "/produtos" },
+        { label: 'Movimentações', icon: 'pi pi-calendar', url: "/movimentacoes" },
+        ...(isAuthenticated && user.role === 'ADMINISTRADOR'
+            ? [{ label: 'Usuário', icon: 'pi pi-user', url: "/usuarios" }]
+            : [])
     ];
 
     // Logo encapsulada para o lado esquerdo

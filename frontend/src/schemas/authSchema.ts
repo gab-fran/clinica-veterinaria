@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import type { FieldConfig } from '../components/Forms/DynamicForm';
+import type { FieldConfig } from '../components/DynamicForm/DynamicForm';
 
 export const loginSchema = z.object({
     email: z.string().min(1, 'E-mail é obrigatório').max(255, 'E-mail deve ter no máximo 255 caracteres').email('E-mail inválido'),
