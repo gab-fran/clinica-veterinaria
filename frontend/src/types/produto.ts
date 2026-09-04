@@ -39,7 +39,7 @@ export interface ProdutoUpdateDTO {
     quantidadeEstoque: number;
     estoqueMinimo: number;
     validade: string;
-    pesoKg: number;
-    dosagem: number;
+    pesoKg?: number;
+    dosagem?: number;
     unidadeMedida: string;
 }
