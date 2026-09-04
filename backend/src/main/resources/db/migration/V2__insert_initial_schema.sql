@@ -1,0 +1,47 @@
+INSERT INTO produto (nome, marca, tipo, unidade_medida, dosagem, peso_kg, quantidade_estoque, estoque_minimo, validade,
+                     status_produto, version)
+VALUES ('Ração Bovina Premium', 'NutriGado', 'RACAO', 'KG', NULL, 50.00, 100, 10, '2027-06-30', TRUE, 0),
+       ('Vacina Febre Aftosa', 'AgroVac', 'VACINA', 'ML', 2.00, 0.10, 500, 50, '2026-12-31', TRUE, 0),
+       ('Vermífugo Oral 500mg', 'SanidadeAnim', 'MEDICAMENTO', 'MG', 500.00, 0.05, 200, 20, '2027-01-15', TRUE, 0),
+       ('Seringa Descartável 10ml', 'MedVet', 'INSUMO', 'UNIDADE', NULL, 0.02, 1000, 100, '2030-01-01', TRUE, 0),
+       ('Ração Equinos Pro', 'CavaloForte', 'RACAO', 'KG', NULL, 30.00, 50, 5, '2026-11-20', TRUE, 0),
+       ('Sal Mineralizado 25kg', 'SalVet', 'INSUMO', 'KG', NULL, 25.00, 80, 15, '2028-05-10', TRUE, 0),
+       ('Anti-inflamatório Inj', 'BioSaude', 'MEDICAMENTO', 'ML', 50.00, 0.20, 30, 5, '2026-10-05', TRUE, 0),
+       ('Vacina Antirrábica', 'AgroVac', 'VACINA', 'ML', 1.00, 0.05, 300, 40, '2027-08-15', TRUE, 0),
+       ('Luva de Procedimento', 'VetSafe', 'INSUMO', 'UNIDADE', NULL, 0.01, 1500, 200, '2029-03-30', TRUE, 0),
+       ('Antibiótico Doxivet', 'BioSaude', 'MEDICAMENTO', 'MG', 100.00, 0.02, 150, 25, '2027-04-12', TRUE, 0);
+
+INSERT INTO usuario (nome, email, senha, role, status_usuario, version)
+VALUES ('Carlos Silva', 'carlos.silva@empresa.com', '$2a$10$e8T91b/Z1x8vK2m3n4o5p6q7r8s9t0u1v2w3x4y5z6a7b8c9d0e1f',
+        'ADMINISTRADOR', TRUE, 0),
+       ('Ana Souza', 'ana.souza@empresa.com', '$2a$10$e8T91b/Z1x8vK2m3n4o5p6q7r8s9t0u1v2w3x4y5z6a7b8c9d0e1f',
+        'FUNCIONARIO', TRUE, 0),
+       ('Roberto Lima', 'roberto.lima@empresa.com', '$2a$10$e8T91b/Z1x8vK2m3n4o5p6q7r8s9t0u1v2w3x4y5z6a7b8c9d0e1f',
+        'FUNCIONARIO', TRUE, 0),
+       ('Mariana Costa', 'mariana.costa@empresa.com', '$2a$10$e8T91b/Z1x8vK2m3n4o5p6q7r8s9t0u1v2w3x4y5z6a7b8c9d0e1f',
+        'ADMINISTRADOR', TRUE, 0),
+       ('Fernando Dias', 'fernando.dias@empresa.com', '$2a$10$e8T91b/Z1x8vK2m3n4o5p6q7r8s9t0u1v2w3x4y5z6a7b8c9d0e1f',
+        'FUNCIONARIO', TRUE, 0),
+       ('Juliana Mendes', 'juliana.mendes@empresa.com', '$2a$10$e8T91b/Z1x8vK2m3n4o5p6q7r8s9t0u1v2w3x4y5z6a7b8c9d0e1f',
+        'FUNCIONARIO', TRUE, 0),
+       ('Lucas Rocha', 'lucas.rocha@empresa.com', '$2a$10$e8T91b/Z1x8vK2m3n4o5p6q7r8s9t0u1v2w3x4y5z6a7b8c9d0e1f',
+        'FUNCIONARIO', FALSE, 0),
+       ('Beatriz Alves', 'beatriz.alves@empresa.com', '$2a$10$e8T91b/Z1x8vK2m3n4o5p6q7r8s9t0u1v2w3x4y5z6a7b8c9d0e1f',
+        'FUNCIONARIO', TRUE, 0),
+       ('Ricardo Oliveira', 'ricardo.oliveira@empresa.com',
+        '$2a$10$e8T91b/Z1x8vK2m3n4o5p6q7r8s9t0u1v2w3x4y5z6a7b8c9d0e1f', 'ADMINISTRADOR', TRUE, 0),
+       ('Patricia Santos', 'patricia.santos@empresa.com',
+        '$2a$10$e8T91b/Z1x8vK2m3n4o5p6q7r8s9t0u1v2w3x4y5z6a7b8c9d0e1f', 'FUNCIONARIO', TRUE, 0);
+
+INSERT INTO movimentacao_estoque (id_produto, id_usuario, quantidade, tipo_movimentacao, status_movimentacao,
+                                  data_criacao_movimentacao, data_atualizacao_movimentacao, version)
+VALUES (1, 1, 100, 'ENTRADA', TRUE, '2026-01-10 08:30:00', '2026-01-10 08:30:00', 0),
+       (2, 1, 500, 'ENTRADA', TRUE, '2026-01-11 09:15:00', '2026-01-11 09:15:00', 0),
+       (1, 2, 10, 'SAIDA', TRUE, '2026-01-12 10:00:00', '2026-01-12 10:00:00', 0),
+       (3, 3, 200, 'ENTRADA', TRUE, '2026-01-15 14:20:00', '2026-01-15 14:20:00', 0),
+       (4, 5, 1000, 'ENTRADA', TRUE, '2026-01-18 11:45:00', '2026-01-18 11:45:00', 0),
+       (2, 2, 20, 'SAIDA', TRUE, '2026-01-20 16:00:00', '2026-01-20 16:00:00', 0),
+       (5, 4, 50, 'ENTRADA', TRUE, '2026-02-01 07:50:00', '2026-02-01 07:50:00', 0),
+       (6, 6, 80, 'ENTRADA', TRUE, '2026-02-05 13:10:00', '2026-02-05 13:10:00', 0),
+       (7, 8, 5, 'SAIDA', TRUE, '2026-02-10 09:05:00', '2026-02-10 09:05:00', 0),
+       (10, 10, 150, 'ENTRADA', TRUE, '2026-02-15 15:30:00', '2026-02-15 15:30:00', 0);

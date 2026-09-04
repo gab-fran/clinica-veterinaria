@@ -40,7 +40,7 @@ public class UsuarioService {
     }
 
     @Transactional
-    public UsuarioResponseDTO cadastrarAdmin(
+    public UsuarioResponseDTO cadastrar(
             UsuarioCreateDTO dto) {
 
         if (usuarioRepository.existsByEmail(dto.email())) {
@@ -50,8 +50,6 @@ public class UsuarioService {
         Usuario usuario = usuarioMapper.toEntity(dto);
 
         usuario.setSenha(passwordEncoder.encode(dto.senha()));
-
-        usuario.setRole(RoleUsuario.ADMINISTRADOR);
 
         return usuarioMapper.toResponse(
                 usuarioRepository.save(usuario)

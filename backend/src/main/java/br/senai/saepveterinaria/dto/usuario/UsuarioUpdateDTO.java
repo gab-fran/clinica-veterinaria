@@ -1,7 +1,9 @@
 package br.senai.saepveterinaria.dto.usuario;
 
+import br.senai.saepveterinaria.enums.RoleUsuario;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 public record UsuarioUpdateDTO(
         @NotBlank(message = "O nome é obrigatório")
@@ -9,6 +11,9 @@ public record UsuarioUpdateDTO(
 
         @NotBlank(message = "O email é obrigatório")
         @Email(message = "Email inválido")
-        String email
+        String email,
+
+        @NotNull(message = "O cargo é obrigatório")
+        RoleUsuario role
 ) {
 }

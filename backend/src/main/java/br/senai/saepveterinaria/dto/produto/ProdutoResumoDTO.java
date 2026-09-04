@@ -8,7 +8,8 @@ public record ProdutoResumoDTO(
         String nome,
         String marca,
         TipoProduto tipo,
-        Integer quantidadeEstoque
+        Integer quantidadeEstoque,
+        Integer estoqueMinimo
 
 ) {
 }

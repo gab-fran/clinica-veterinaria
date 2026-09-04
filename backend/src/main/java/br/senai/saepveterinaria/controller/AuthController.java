@@ -2,9 +2,12 @@ package br.senai.saepveterinaria.controller;
 
 import br.senai.saepveterinaria.dto.auth.LoginRequestDTO;
 import br.senai.saepveterinaria.dto.auth.LoginResponseDTO;
+import br.senai.saepveterinaria.dto.usuario.UsuarioCreateDTO;
+import br.senai.saepveterinaria.dto.usuario.UsuarioResponseDTO;
 import br.senai.saepveterinaria.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,5 +27,11 @@ public class AuthController {
                 authService.login(dto),
                 "Bearer"
         ));
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<UsuarioResponseDTO> registrar(@RequestBody @Valid UsuarioCreateDTO dto) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(authService.registrar(dto));
     }
 }

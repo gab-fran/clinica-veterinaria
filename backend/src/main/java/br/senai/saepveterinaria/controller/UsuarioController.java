@@ -46,7 +46,7 @@ public class UsuarioController {
     @PreAuthorize("hasRole('ADMINISTRADOR')")
     @PostMapping
     public ResponseEntity<UsuarioResponseDTO> cadastrar(@RequestBody @Valid UsuarioCreateDTO dto) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(usuarioService.cadastrarAdmin(dto));
+        return ResponseEntity.status(HttpStatus.CREATED).body(usuarioService.cadastrar(dto));
     }
 
     @PutMapping("/{id}")
