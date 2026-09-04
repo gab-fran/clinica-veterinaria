@@ -7,19 +7,15 @@ WORKDIR /app
 
 # Copia arquivos necessários para resolver dependências
 COPY pom.xml .
-COPY .mvn .mvn
-COPY mvnw .
 
-# Baixa dependências e aproveita cache
-
-RUN chmod +x mvnw
-RUN ./mvnw dependency:go-offline
+# Baixa dependências e aproveita cache usando o Maven nativo da imagem
+RUN mvn dependency:go-offline
 
 # Copia o código-fonte
 COPY src src
 
 # Gera o jar
-RUN ./mvnw clean package -DskipTests
+RUN mvn clean package -DskipTests
 RUN ls -la target
 
 # =========================
