@@ -19,7 +19,8 @@ public class CorsConfig {
         // Frontends autorizados
         config.setAllowedOrigins(List.of(
                 "http://localhost:5173",
-                "http://localhost:3000"
+                "http://localhost:3000",
+                "https://clinica-veterinaria-frontend-nine.vercel.app/"
         ));
 
         // Métodos HTTP permitidos
