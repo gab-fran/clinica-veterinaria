@@ -50,6 +50,19 @@ export function LoginPage() {
                         submitButtonClassName={styles.btnLogin}
                     >
                     </DynamicForm>
+                    <section className={styles.testUsersCard} aria-labelledby="test-users-title">
+                        <h3 id="test-users-title">Usuários para teste</h3>
+                        <div className={styles.testUser}>
+                            <strong>Administrador</strong>
+                            <span>admin@email.com</span>
+                            <span>Senha: administrador</span>
+                        </div>
+                        <div className={styles.testUser}>
+                            <strong>Funcionário</strong>
+                            <span>funcionario@email.com</span>
+                            <span>Senha: funcionario</span>
+                        </div>
+                    </section>
                 </div>
             </main>
             <Footer />
