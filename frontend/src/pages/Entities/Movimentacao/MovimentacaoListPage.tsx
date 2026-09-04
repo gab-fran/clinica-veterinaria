@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import NavBar from '../../../components/NavBar/NavBar';
 import Footer from '../../../components/Footer/Footer';
+import { DeleteConfirmModal } from '../../../components/DeleteConfirmModal/DeleteConfirmModal';
 import { DynamicList } from '../../../components/DynamicList/DynamicList';
 import { ApiError } from '../../../services/apiClient';
 import type { Page } from '../../../types/api';
@@ -18,6 +19,8 @@ export function MovimentacaoListPage() {
   const [reloadKey, setReloadKey] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [deleteId, setDeleteId] = useState<number | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     let active = true;
@@ -50,14 +53,21 @@ export function MovimentacaoListPage() {
     setReloadKey((current) => current + 1);
   };
 
-  const handleDelete = async (id: number) => {
-    if (!window.confirm('Deseja realmente deletar esta movimentação?')) return;
+  const handleDelete = (id: number) => {
+    setDeleteId(id);
+  };
 
+  const confirmDelete = async () => {
+    if (deleteId === null) return;
+    setIsDeleting(true);
     try {
-      await movimentacaoService.remover(id);
+      await movimentacaoService.remover(deleteId);
+      setDeleteId(null);
       setReloadKey((current) => current + 1);
     } catch (requestError: unknown) {
       window.alert(requestError instanceof ApiError ? requestError.message : 'Não foi possível deletar a movimentação.');
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -106,6 +116,14 @@ export function MovimentacaoListPage() {
           )}
         />
       </main>
+      {deleteId !== null && (
+        <DeleteConfirmModal
+          entityName="movimentação"
+          onCancel={() => setDeleteId(null)}
+          onConfirm={confirmDelete}
+          isDeleting={isDeleting}
+        />
+      )}
       <Footer />
     </div>
   );

@@ -49,13 +49,10 @@ export function LoginPage() {
                         fieldClassName={styles.inputWrapper}
                         submitButtonClassName={styles.btnLogin}
                     >
-                        <div className={styles.loginOptions}>
-                            <a href="/recuperar-senha">Esqueceu a senha?</a>
-                        </div>
                     </DynamicForm>
                 </div>
             </main>
             <Footer />
         </div>
     );
-}
+}
