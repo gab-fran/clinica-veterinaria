@@ -1,0 +1,195 @@
+.headerContainer {
+  width: 100%;
+  background-color: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  box-shadow: 0 4px 14px rgba(48, 52, 64, 0.07);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.logoContainer {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  height: 56px;
+  padding-right: var(--spacing-md);
+  overflow: visible;
+}
+
+.logoImage {
+  height: 40px;
+  width: auto;
+  max-width: none;
+  object-fit: contain;
+  transform: scale(1.35);
+  transform-origin: left center;
+}
+
+.userSection {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding-left: var(--spacing-md);
+}
+
+.userInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  font-size: var(--font-size-sm);
+  color: var(--color-text);
+}
+
+.greetingText {
+  color: var(--color-secondary);
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.userName {
+  font-weight: 600;
+}
+
+.logoutButton {
+  background-color: transparent;
+  color: var(--color-primary);
+  border: 1px solid var(--color-primary);
+  padding: 0.375rem 0.75rem;
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  transition: all var(--transition-fast);
+}
+
+.logoutButton:hover {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+}
+
+.logoutButton:focus-visible {
+  outline: 2px solid var(--color-secondary);
+  outline-offset: 2px;
+}
+
+.loginLink {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  font-size: var(--font-size-sm);
+  text-decoration: none;
+  transition: background-color var(--transition-fast);
+}
+
+.loginLink:hover {
+  background-color: var(--color-primary-hover);
+  text-decoration: none;
+}
+
+/* Moderação do :global para estilizar o Menubar do PrimeReact */
+.headerContainer :global(.p-menubar) {
+  background-color: var(--color-surface);
+  border: none;
+  border-radius: 0;
+  height: 56px;
+  padding: 0.125rem 1.5rem;
+  width: 100%;
+}
+
+.headerContainer :global(.p-menubar .p-menuitem-link) {
+  align-items: center;
+  color: var(--color-text);
+  border-radius: var(--radius-md);
+  display: grid;
+  column-gap: 0.5rem;
+  height: 40px;
+  justify-content: center;
+  line-height: 1;
+  margin: 0 0.125rem;
+  padding: 0.625rem 0.875rem;
+  position: relative;
+  transition: background-color var(--transition-fast), color var(--transition-fast);
+}
+
+.headerContainer :global(.p-menubar .p-menuitem-link::before) {
+  content: "";
+  grid-column: 3;
+  grid-row: 1;
+}
+
+.headerContainer :global(.p-menubar .p-menuitem) {
+  display: flex;
+  justify-content: center;
+}
+
+.headerContainer :global(.p-menubar .p-menuitem-text) {
+  grid-column: 2;
+  grid-row: 1;
+  line-height: 1;
+  text-align: center;
+}
+
+.headerContainer :global(.p-menubar .p-menuitem-link:hover) {
+  background-color: color-mix(in srgb, var(--color-secondary) 15%, transparent);
+  color: var(--color-secondary);
+}
+
+.headerContainer :global(.p-menubar .p-menubar-root-list) {
+  align-items: center;
+  gap: 0.125rem;
+  flex: 1;
+  justify-content: left;
+}
+
+.headerContainer :global(.p-menubar .p-menubar-end) {
+  margin-left: auto;
+}
+
+.headerContainer :global(.p-menubar .p-menuitem-icon) {
+  color: var(--color-primary);
+  font-size: 0.95rem;
+  grid-column: 1;
+  grid-row: 1;
+  margin: 0;
+  transition: color var(--transition-fast);
+}
+
+.headerContainer :global(.p-menubar .p-menuitem.p-highlight > .p-menuitem-link) {
+  position: relative;
+  background-color: color-mix(in srgb, var(--color-primary) 10%, transparent);
+  color: var(--color-secondary);
+  font-weight: 600;
+}
+
+.headerContainer :global(.p-menubar .p-menuitem.p-highlight > .p-menuitem-link::after) {
+  position: absolute;
+  right: 0.75rem;
+  bottom: 0.25rem;
+  left: 0.75rem;
+  height: 2px;
+  border-radius: var(--radius-full);
+  background-color: var(--color-primary);
+  content: "";
+}
+
+@media (max-width: 768px) {
+  .headerContainer :global(.p-menubar) {
+    height: 56px;
+    padding: 0.125rem 1rem;
+  }
+
+  .logoContainer {
+    padding-right: 0.5rem;
+  }
+
+  .logoImage {
+    height: 48px;
+    transform: scale(1.25);
+  }
+
+  .headerContainer :global(.p-menubar .p-menuitem-link) {
+    margin: 0.125rem 0;
+  }
+}
