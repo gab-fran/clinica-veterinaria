@@ -18,7 +18,6 @@ public record UsuarioCreateDTO(
         @Size(min = 8, message = "A senha deve ter pelo menos 8 caracteres")
         String senha,
 
-        @NotNull(message = "O cargo é obrigatório")
         RoleUsuario role
 ) {
 }
