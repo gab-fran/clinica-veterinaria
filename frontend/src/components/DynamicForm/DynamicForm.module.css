@@ -1,0 +1,101 @@
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+  background-color: var(--color-surface);
+  padding: var(--spacing-xl);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--color-border);
+  width: 100%;
+}
+
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  width: 100%;
+}
+
+.fieldLabel {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-text);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.requiredAsterisk {
+  color: var(--color-primary);
+  font-weight: 700;
+}
+
+.inputField {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  font-size: var(--font-size-base);
+  font-family: inherit;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.inputField:hover {
+  border-color: var(--color-secondary);
+}
+
+.inputField:focus-visible {
+  outline: none;
+  border-color: var(--color-secondary);
+  box-shadow: 0 0 0 3px rgba(46, 131, 140, 0.2);
+}
+
+.inputField:disabled {
+  background-color: var(--color-bg);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.errorMessage {
+  font-size: var(--font-size-sm);
+  color: var(--color-danger);
+  font-weight: 500;
+  margin-top: var(--spacing-xs);
+}
+
+.submitButton {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color var(--transition-fast), transform var(--transition-fast);
+}
+
+.submitButton:hover:not(:disabled) {
+  background-color: var(--color-primary-hover);
+}
+
+.submitButton:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.submitButton:focus-visible {
+  outline: 2px solid var(--color-secondary);
+  outline-offset: 2px;
+}
+
+.submitButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

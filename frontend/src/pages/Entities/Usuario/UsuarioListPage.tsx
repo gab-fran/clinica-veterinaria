@@ -8,6 +8,7 @@ import type { Page } from '../../../types/api';
 import type { UsuarioResponseDTO } from '../../../types/usuario';
 import { usuarioService } from '../../../services/usuarioService';
 import { usuarioListColumns } from '../../../schemas/usuarioSchema';
+import styles from '../List.module.css';
 
 const PAGE_SIZE = 10;
 
@@ -61,23 +62,23 @@ export function UsuarioListPage() {
   };
 
   return (
-    <div>
+    <div className={styles.pageContainer}>
       <NavBar />
-      <main>
-        <div>
-          <div>
-            <p>Estoque</p>
-            <h1>Usuários</h1>
-            <p>Consulte os usuários cadastrados e gerencie seus acessos.</p>
+      <main className={styles.pageMain}>
+        <div className={styles.headerSection}>
+          <div className={styles.headerTitleWrapper}>
+            <span className={styles.headerCategory}>Gestão</span>
+            <h1 className={styles.headerTitle}>Usuários</h1>
+            <p className={styles.headerSubtitle}>Consulte os usuários cadastrados e gerencie seus acessos.</p>
           </div>
-          <div>
-            <Link to="/usuarios/novo">Novo usuário</Link>
-            {page && <span>{page.totalElements} usuários</span>}
+          <div className={styles.headerActions}>
+            <Link to="/usuarios/novo" className={styles.primaryLinkButton}>Novo usuário</Link>
+            {page && <span className={styles.badgeCount}>{page.totalElements} usuários</span>}
           </div>
         </div>
 
         {error && (
-          <button type="button" onClick={handleRetry}>
+          <button type="button" onClick={handleRetry} className={styles.retryButton}>
             Tentar novamente
           </button>
         )}
@@ -95,13 +96,13 @@ export function UsuarioListPage() {
             onPageChange: handlePageChange,
           } : undefined}
           actions={(usuario) => (
-            <>
-              <Link to={`/usuarios/${usuario.idUsuario}`}>Detalhes</Link>
-              <Link to={`/usuarios/${usuario.idUsuario}/editar`}>Atualizar</Link>
-              <button type="button" onClick={() => handleDelete(usuario.idUsuario)}>
+            <div className={styles.actionGroup}>
+              <Link to={`/usuarios/${usuario.idUsuario}`} className={styles.actionLink}>Detalhes</Link>
+              <Link to={`/usuarios/${usuario.idUsuario}/editar`} className={styles.actionLink}>Atualizar</Link>
+              <button type="button" onClick={() => handleDelete(usuario.idUsuario)} className={styles.deleteButton}>
                 Deletar
               </button>
-            </>
+            </div>
           )}
         />
       </main>
@@ -109,3 +110,4 @@ export function UsuarioListPage() {
     </div>
   );
 }
+

@@ -8,6 +8,7 @@ import type { Page } from '../../../types/api';
 import { movimentacaoService } from '../../../services/movimentacaoService';
 import type { MovimentacaoResumoDTO } from '../../../types/movimentacao';
 import { movimentacaoListColumns } from '../../../schemas/movimentacaoSchema';
+import styles from '../List.module.css';
 
 const PAGE_SIZE = 10;
 
@@ -61,23 +62,23 @@ export function MovimentacaoListPage() {
   };
 
   return (
-    <div>
+    <div className={styles.pageContainer}>
       <NavBar />
-      <main>
-        <div>
-          <div>
-            <p>Lista</p>
-            <h1>Movimentações</h1>
-            <p>Consulte as movimentações cadastradas e acompanhe o estoque disponível.</p>
+      <main className={styles.pageMain}>
+        <div className={styles.headerSection}>
+          <div className={styles.headerTitleWrapper}>
+            <span className={styles.headerCategory}>Estoque</span>
+            <h1 className={styles.headerTitle}>Movimentações</h1>
+            <p className={styles.headerSubtitle}>Consulte as movimentações cadastradas e acompanhe o histórico.</p>
           </div>
-          <div>
-            <Link to="/movimentacoes/novo">Nova movimentação</Link>
-            {page && <span>{page.totalElements} movimentações</span>}
+          <div className={styles.headerActions}>
+            <Link to="/movimentacoes/novo" className={styles.primaryLinkButton}>Nova movimentação</Link>
+            {page && <span className={styles.badgeCount}>{page.totalElements} movimentações</span>}
           </div>
         </div>
 
         {error && (
-          <button type="button" onClick={handleRetry}>
+          <button type="button" onClick={handleRetry} className={styles.retryButton}>
             Tentar novamente
           </button>
         )}
@@ -95,13 +96,13 @@ export function MovimentacaoListPage() {
             onPageChange: handlePageChange,
           } : undefined}
           actions={(movimentacao) => (
-            <>
-              <Link to={`/movimentacoes/${movimentacao.idMovimentacaoEstoque}`}>Detalhes</Link>
-              <Link to={`/movimentacoes/${movimentacao.idMovimentacaoEstoque}/editar`}>Atualizar</Link>
-              <button type="button" onClick={() => handleDelete(movimentacao.idMovimentacaoEstoque)}>
+            <div className={styles.actionGroup}>
+              <Link to={`/movimentacoes/${movimentacao.idMovimentacaoEstoque}`} className={styles.actionLink}>Detalhes</Link>
+              <Link to={`/movimentacoes/${movimentacao.idMovimentacaoEstoque}/editar`} className={styles.actionLink}>Atualizar</Link>
+              <button type="button" onClick={() => handleDelete(movimentacao.idMovimentacaoEstoque)} className={styles.deleteButton}>
                 Deletar
               </button>
-            </>
+            </div>
           )}
         />
       </main>
@@ -109,3 +110,4 @@ export function MovimentacaoListPage() {
     </div>
   );
 }
+

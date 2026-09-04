@@ -7,6 +7,7 @@ export interface UsuarioCreateDTO {
     nome: string;
     email: string;
     senha: string;
+    role: string;
 }
 
 export interface UsuarioResponseDTO {
@@ -20,4 +21,5 @@ export interface UsuarioResponseDTO {
 export interface UsuarioUpdateDTO {
     nome: string;
     email: string;
+    role: string;
 }

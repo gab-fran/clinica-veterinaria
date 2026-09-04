@@ -5,8 +5,8 @@ export interface ProdutoCreateDTO {
     quantidadeEstoque: number;
     estoqueMinimo: number;
     validade: string;
-    pesoKg: number;
-    dosagem: number;
+    pesoKg?: number;
+    dosagem?: number;
     unidadeMedida: string;
 }
 
@@ -18,8 +18,8 @@ export interface ProdutoResponseDTO {
     quantidadeEstoque: number;
     estoqueMinimo: number;
     validade: string;
-    pesoKg: number;
-    dosagem: number;
+    pesoKg?: number;
+    dosagem?: number;
     unidadeMedida: string;
 }
 
@@ -29,6 +29,7 @@ export interface ProdutoResumoDTO {
     marca: string;
     tipo: string;
     quantidadeEstoque: number;
+    estoqueMinimo: number;
 }
 
 export interface ProdutoUpdateDTO {

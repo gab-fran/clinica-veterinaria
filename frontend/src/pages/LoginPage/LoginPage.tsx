@@ -6,6 +6,7 @@ import { authService } from '../../services/authService';
 import { ApiError } from '../../services/apiClient';
 import NavBar from '../../components/NavBar/NavBar';
 import Footer from '../../components/Footer/Footer';
+import styles from './LoginPage.module.css';
 
 export function LoginPage() {
     const navigate = useNavigate(); // 2. Inicialize o hook
@@ -33,26 +34,28 @@ export function LoginPage() {
     };
 
     return (
-        <>
+        <div className={styles.pageContainer}>
             <NavBar />
-            <div className="login-wrapper">
-                <h2>Acessar Conta</h2>
-                {loginError && <p className="error-message" role="alert">{loginError}</p>}
-                <DynamicForm
-                    schema={loginSchema}
-                    fields={loginFields}
-                    onSubmit={handleLogin}
-                    submitText="Entrar"
-                    className="login-form-custom"
-                    fieldClassName="input-wrapper"
-                    submitButtonClassName="btn-login"
-                >
-                    <div className="login-options">
-                        <a href="/recuperar-senha">Esqueceu a senha?</a>
-                    </div>
-                </DynamicForm>
-            </div>
+            <main className={styles.loginMain}>
+                <div className={styles.loginWrapper}>
+                    <h2 className={styles.loginTitle}>Acessar Conta</h2>
+                    {loginError && <p className={styles.errorMessage} role="alert">{loginError}</p>}
+                    <DynamicForm
+                        schema={loginSchema}
+                        fields={loginFields}
+                        onSubmit={handleLogin}
+                        submitText="Entrar"
+                        className={styles.loginFormCustom}
+                        fieldClassName={styles.inputWrapper}
+                        submitButtonClassName={styles.btnLogin}
+                    >
+                        <div className={styles.loginOptions}>
+                            <a href="/recuperar-senha">Esqueceu a senha?</a>
+                        </div>
+                    </DynamicForm>
+                </div>
+            </main>
             <Footer />
-        </>
+        </div>
     );
-}
+}

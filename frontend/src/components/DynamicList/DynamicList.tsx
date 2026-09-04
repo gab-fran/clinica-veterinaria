@@ -1,4 +1,5 @@
 import type { Key, ReactNode } from 'react';
+import styles from './DynamicList.module.css';
 
 export type ListColumn<T> = {
     key: keyof T | string;
@@ -49,37 +50,37 @@ export function DynamicList<T>({
     const canGoForward = pagination !== undefined && pagination.page < pagination.totalPages - 1;
 
     return (
-        <section aria-busy={loading}>
-            <div >
-                <table>
+        <section className={styles.listSection} aria-busy={loading}>
+            <div className={styles.tableWrapper}>
+                <table className={styles.dataTable}>
                     <thead>
                         <tr>
                             {columns.map((column) => (
-                                <th key={String(column.key)} scope="col">
+                                <th key={String(column.key)} scope="col" className={styles.tableHeaderCell}>
                                     {column.header}
                                 </th>
                             ))}
-                            {actions && <th scope="col">Ações</th>}
+                            {actions && <th scope="col" className={styles.tableHeaderCell}>Ações</th>}
                         </tr>
                     </thead>
                     <tbody>
                         {loading && (
                             <tr>
-                                <td colSpan={columns.length + (actions ? 1 : 0)}>
+                                <td colSpan={columns.length + (actions ? 1 : 0)} className={styles.statusMessageCell}>
                                     Carregando...
                                 </td>
                             </tr>
                         )}
                         {!loading && error && (
                             <tr>
-                                <td colSpan={columns.length + (actions ? 1 : 0)}>
+                                <td colSpan={columns.length + (actions ? 1 : 0)} className={styles.statusMessageCell}>
                                     {error}
                                 </td>
                             </tr>
                         )}
                         {!loading && !error && items.length === 0 && (
                             <tr>
-                                <td colSpan={columns.length + (actions ? 1 : 0)}>
+                                <td colSpan={columns.length + (actions ? 1 : 0)} className={styles.statusMessageCell}>
                                     {emptyMessage}
                                 </td>
                             </tr>
@@ -88,14 +89,17 @@ export function DynamicList<T>({
                             <tr
                                 key={getRowKey(item, rowKey, index)}
                                 onClick={() => onRowClick?.(item)}
+                                className={`${styles.tableRow} ${onRowClick ? styles.tableRowInteractive : ''}`}
                             >
                                 {columns.map((column) => (
-                                    <td key={String(column.key)} className={column.className}>
+                                    <td key={String(column.key)} className={column.className || styles.tableDataCell}>
                                         {column.render ? column.render(item) : getCellValue(item, column.key)}
                                     </td>
                                 ))}
                                 {actions && (
-                                    <td onClick={(event) => event.stopPropagation()}>{actions(item)}</td>
+                                    <td className={styles.tableDataCell} onClick={(event) => event.stopPropagation()}>
+                                        {actions(item)}
+                                    </td>
                                 )}
                             </tr>
                         ))}
@@ -104,19 +108,21 @@ export function DynamicList<T>({
             </div>
 
             {pagination && pagination.totalPages > 1 && (
-                <nav aria-label="Paginação da lista">
+                <nav className={styles.paginationContainer} aria-label="Paginação da lista">
                     <button
                         type="button"
+                        className={styles.paginationButton}
                         onClick={() => pagination.onPageChange(pagination.page - 1)}
                         disabled={!canGoBack || loading}
                     >
                         Anterior
                     </button>
-                    <span>
+                    <span className={styles.paginationInfo}>
                         Página {pagination.page + 1} de {pagination.totalPages}
                     </span>
                     <button
                         type="button"
+                        className={styles.paginationButton}
                         onClick={() => pagination.onPageChange(pagination.page + 1)}
                         disabled={!canGoForward || loading}
                     >
@@ -127,3 +133,4 @@ export function DynamicList<T>({
         </section>
     );
 }
+

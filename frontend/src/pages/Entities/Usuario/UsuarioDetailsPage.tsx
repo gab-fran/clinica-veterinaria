@@ -7,6 +7,8 @@ import { ApiError } from '../../../services/apiClient';
 import { usuarioService } from '../../../services/usuarioService';
 import type { UsuarioResponseDTO } from '../../../types/usuario';
 import { usuarioUpdateSchema, type UsuarioUpdateFormData } from '../../../schemas/usuarioSchema';
+import styles from '../Details.module.css';
+import { RoleUsuario } from '../../../enums/roleUsuario';
 
 type UsuarioDetailsPageProps = {
     edit?: boolean;
@@ -15,6 +17,12 @@ type UsuarioDetailsPageProps = {
 const updateFields: FieldConfig<UsuarioUpdateFormData>[] = [
     { name: 'nome', label: 'Nome', required: true },
     { name: 'email', label: 'E-mail', type: 'email', required: true },
+    {
+           name: 'role',
+           label: 'Cargo',
+           required: true,
+           options: Object.values(RoleUsuario).map((role) => ({ label: role, value: role })),
+       },
 ];
 
 export function UsuarioDetailsPage({ edit = false }: UsuarioDetailsPageProps) {
@@ -50,11 +58,18 @@ export function UsuarioDetailsPage({ edit = false }: UsuarioDetailsPageProps) {
     };
 
     return (
-        <div>
+        <div className={styles.pageContainer}>
             <NavBar />
-            <main>
-                <Link to="/usuarios">Voltar para usuários</Link>
-                <h1>{edit ? 'Atualizar usuário' : 'Detalhes do usuário'}</h1>
+            <main className={styles.pageMain}>
+                <div>
+                    <Link to="/usuarios" style={{ color: 'var(--color-secondary)', fontWeight: 600, textDecoration: 'none' }}>
+                        ← Voltar para usuários
+                    </Link>
+                    <h1 style={{ fontSize: 'var(--font-size-2xl)', fontWeight: 800, color: 'var(--color-text)', marginTop: '0.5rem' }}>
+                        {edit ? 'Atualizar usuário' : 'Detalhes do usuário'}
+                    </h1>
+                </div>
+
                 {invalidId && <p role="alert">Identificador de usuário inválido.</p>}
                 {!invalidId && loading && <p>Carregando...</p>}
                 {error && <p role="alert">{error}</p>}
@@ -63,17 +78,29 @@ export function UsuarioDetailsPage({ edit = false }: UsuarioDetailsPageProps) {
                         <DynamicForm
                             schema={usuarioUpdateSchema}
                             fields={updateFields}
-                            defaultValues={{ nome: usuario.nome, email: usuario.email }}
+                            defaultValues={{ nome: usuario.nome, email: usuario.email, role: usuario.role as UsuarioUpdateFormData['role'] }}
                             onSubmit={handleUpdate}
                             submitText="Atualizar"
                         />
                     ) : (
-                        <dl>
-                            <dt>Nome</dt><dd>{usuario.nome}</dd>
-                            <dt>E-mail</dt><dd>{usuario.email}</dd>
-                            <dt>Cargo</dt><dd>{usuario.role}</dd>
-                            <dt>Status</dt><dd>{usuario.statusUsuario ? 'Ativo' : 'Inativo'}</dd>
-                        </dl>
+                        <div className={styles.cardContainer}>
+                            <div className={styles.infoGroup}>
+                                <span className={styles.infoLabel}>Nome</span>
+                                <span className={styles.infoValue}>{usuario.nome}</span>
+                            </div>
+                            <div className={styles.infoGroup}>
+                                <span className={styles.infoLabel}>E-mail</span>
+                                <span className={styles.infoValue}>{usuario.email}</span>
+                            </div>
+                            <div className={styles.infoGroup}>
+                                <span className={styles.infoLabel}>Cargo</span>
+                                <span className={styles.infoValue}>{usuario.role}</span>
+                            </div>
+                            <div className={styles.infoGroup}>
+                                <span className={styles.infoLabel}>Status</span>
+                                <span className={styles.infoValue}>{usuario.statusUsuario ? 'Ativo' : 'Inativo'}</span>
+                            </div>
+                        </div>
                     )
                 )}
             </main>
@@ -81,3 +108,4 @@ export function UsuarioDetailsPage({ edit = false }: UsuarioDetailsPageProps) {
         </div>
     );
 }
+

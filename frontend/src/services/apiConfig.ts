@@ -6,6 +6,7 @@ export const API_BASE_URL = (import.meta.env.VITE_API_URL ?? DEFAULT_API_URL).re
 
 export const AUTH_TOKEN_KEY = 'saep.auth.token';
 
+export const USER_ID = 'saep.user.id';
 export const USER_NAME = 'saep.user.name';
 export const USER_EMAIL = 'saep.user.email';
 export const USER_ROLE = 'saep.user.role';
@@ -23,17 +24,18 @@ export function clearAccessToken(): void {
 }
 
 export function setUserData(user: UsuarioResponseDTO): void {
+  localStorage.setItem(USER_ID, String(user.idUsuario));
   localStorage.setItem(USER_NAME, user.nome);
   localStorage.setItem(USER_EMAIL, user.email);
   localStorage.setItem(USER_ROLE, user.role);
 }
 
 export function getUserData(): UsuarioResponseDTO {
-  return { 
-    idUsuario: 0,
+  return {
+    idUsuario: Number(localStorage.getItem(USER_ID)) || 0,
     nome: localStorage.getItem(USER_NAME) || '',
     email: localStorage.getItem(USER_EMAIL) || '',
     role: localStorage.getItem(USER_ROLE) || '',
-    statusUsuario: true 
+    statusUsuario: true
   };
 }

@@ -8,6 +8,7 @@ import { produtoService } from '../../../services/produtoService';
 import type { Page } from '../../../types/api';
 import type { ProdutoResumoDTO } from '../../../types/produto';
 import { produtoListColumns } from '../../../schemas/produtoSchema';
+import styles from '../List.module.css';
 
 const PAGE_SIZE = 10;
 
@@ -61,23 +62,23 @@ export function ProdutoListPage() {
   };
 
   return (
-    <div>
+    <div className={styles.pageContainer}>
       <NavBar />
-      <main>
-        <div>
-          <div>
-            <p>Estoque</p>
-            <h1>Produtos</h1>
-            <p>Consulte os produtos cadastrados e acompanhe o estoque disponível.</p>
+      <main className={styles.pageMain}>
+        <div className={styles.headerSection}>
+          <div className={styles.headerTitleWrapper}>
+            <span className={styles.headerCategory}>Estoque</span>
+            <h1 className={styles.headerTitle}>Produtos</h1>
+            <p className={styles.headerSubtitle}>Consulte os produtos cadastrados e acompanhe o estoque disponível.</p>
           </div>
-          <div>
-            <Link to="/produtos/novo">Novo produto</Link>
-            {page && <span>{page.totalElements} produtos</span>}
+          <div className={styles.headerActions}>
+            <Link to="/produtos/novo" className={styles.primaryLinkButton}>Novo produto</Link>
+            {page && <span className={styles.badgeCount}>{page.totalElements} produtos</span>}
           </div>
         </div>
 
         {error && (
-          <button type="button" onClick={handleRetry}>
+          <button type="button" onClick={handleRetry} className={styles.retryButton}>
             Tentar novamente
           </button>
         )}
@@ -95,13 +96,13 @@ export function ProdutoListPage() {
             onPageChange: handlePageChange,
           } : undefined}
           actions={(produto) => (
-            <>
-              <Link to={`/produtos/${produto.idProduto}`}>Detalhes</Link>
-              <Link to={`/produtos/${produto.idProduto}/editar`}>Atualizar</Link>
-              <button type="button" onClick={() => handleDelete(produto.idProduto)}>
+            <div className={styles.actionGroup}>
+              <Link to={`/produtos/${produto.idProduto}`} className={styles.actionLink}>Detalhes</Link>
+              <Link to={`/produtos/${produto.idProduto}/editar`} className={styles.actionLink}>Atualizar</Link>
+              <button type="button" onClick={() => handleDelete(produto.idProduto)} className={styles.deleteButton}>
                 Deletar
               </button>
-            </>
+            </div>
           )}
         />
       </main>
@@ -109,3 +110,4 @@ export function ProdutoListPage() {
     </div>
   );
 }
+
